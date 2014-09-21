@@ -1,0 +1,17 @@
+# This file is part of the CampaignChain package.
+#
+# (c) Sandro Groganz <sandro@campaignchain.com>
+#
+# For the full copyright and license information, please view the LICENSE
+# file that was distributed with this source code.
+
+hooks:
+    campaignchain-duration:
+        display_name: Duration Hook
+        identifier: duration
+        services:
+            form: campaignchain.hook.form.type.campaignchain.duration
+            entity: campaignchain.hook.campaignchain.duration
+            event_subscriber: campaignchain.hook.listener.campaignchain.duration
+        label: Duration
+        type: trigger

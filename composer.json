@@ -1,0 +1,14 @@
+{
+    "name": "campaignchain/hook-duration",
+    "description": "Define the start and end date of an entity.",
+    "keywords": ["duration"],
+    "type": "campaignchain-hook",
+    "homepage": "http://www.campaignchain.com",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Sandro Groganz",
+            "email": "sandro@campaignchain.com"
+        }
+    ]
+}
