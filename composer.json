@@ -13,5 +13,14 @@
     ],
     "autoload": {
         "psr-4": { "CampaignChain\\Hook\\DurationBundle\\": "" }
+    },
+    "extra": {
+        "campaignchain": {
+            "kernel": {
+                "classes": [
+                    "CampaignChain\\Hook\\DurationBundle\\CampaignChainHookDurationBundle"
+                ]
+            }
+        }
     }
 }
