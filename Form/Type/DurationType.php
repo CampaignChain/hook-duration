@@ -29,24 +29,6 @@ class DurationType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        // If the campaign is running right now, then offer the
-        // option to execute now or schedule execution.
-//        if(DateTimeUtil::isWithinDuration($this->campaign->getStartDate(), new \DateTime('now'), $this->campaign->getEndDate())){
-//            $builder
-//                ->add('execution_choice', 'choice', array(
-//                    'label'     => false,
-//                    'choices' => array(
-//                        'now' => 'Now',
-//                        'schedule' => 'Schedule'
-//                    ),
-//                    'mapped' => false,
-//                    'expanded' => true,
-//                    'multiple' => false,
-//                    'required' => true,
-//                    'data' => 'schedule',
-//                ));
-//        }
-
         $builder
             ->add('startDate', new DaterangepickerType(), array(
                 'label' => 'Start',
