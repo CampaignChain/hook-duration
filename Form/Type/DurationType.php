@@ -65,6 +65,9 @@ class DurationType extends AbstractType
                     // TODO: Decide how to display/deal with user timezone vs. campaign timezone.
 //                    'help_text' => 'Timezone: '.$options['data']->getEndDate()->getTimezone()->getName(),
                 )
+            ))
+            ->add('timezone', 'hidden', array(
+                'data' => $this->datetime->getUserTimezone(),
             ));
     }
 

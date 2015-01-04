@@ -16,6 +16,8 @@ class Duration
 
     protected $endDate;
 
+    protected $timezone = 'UTC';
+
     /**
      * Set startDate
      *
@@ -60,5 +62,28 @@ class Duration
     public function getEndDate()
     {
         return $this->endDate;
+    }
+
+    /**
+     * Set timezone
+     *
+     * @param string $timezone
+     * @return Duration
+     */
+    public function setTimezone($timezone)
+    {
+        $this->timezone = $timezone;
+
+        return $this;
+    }
+
+    /**
+     * Get timezone
+     *
+     * @return string
+     */
+    public function getTimezone()
+    {
+        return $this->timezone;
     }
 }

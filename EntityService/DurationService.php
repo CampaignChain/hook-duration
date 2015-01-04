@@ -27,16 +27,6 @@ class DurationService implements HookServiceTriggerInterface
         $this->em = $em;
     }
 
-//    public function newObject($entityClass, $entityId, $formData){
-//        $duration = new Duration();
-//        $duration->setEntityId($entityId);
-//        $duration->setEntityClass($entityClass);
-//        $duration->setStartDate($formData['start_date']);
-//        $duration->setEndDate($formData['end_date']);
-//
-//        return $duration;
-//    }
-
     public function getHook($entity){
         $hook = new Duration();
 
@@ -90,7 +80,7 @@ class DurationService implements HookServiceTriggerInterface
                 // TODO: Research whether this is a security risk, e.g. if the property name has been injected via a REST post.
                 $method = 'set'.Inflector::classify($property);
                 if(($method == 'setStartDate' || $method == 'setEndDate') && !is_object($value) && !$value instanceof \DateTime){
-                    $value = new \DateTime($value);
+                    $value = new \DateTime($value, new \DateTimeZone($hookData['timezone']));
                 }
                 $hook->$method($value);
             }
