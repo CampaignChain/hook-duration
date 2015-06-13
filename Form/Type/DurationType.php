@@ -10,13 +10,13 @@
 
 namespace CampaignChain\Hook\DurationBundle\Form\Type;
 
-use Symfony\Component\Form\AbstractType;
+use CampaignChain\CoreBundle\Form\Type\HookType;
 use Symfony\Component\Form\FormBuilderInterface;
 use CampaignChain\CoreBundle\Util\DateTimeUtil;
 use CampaignChain\CoreBundle\Form\Type\DaterangepickerType;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class DurationType extends AbstractType
+class DurationType extends HookType
 {
     protected $container;
     protected $datetime;
