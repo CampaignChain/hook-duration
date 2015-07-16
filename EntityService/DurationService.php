@@ -10,6 +10,7 @@
 
 namespace CampaignChain\Hook\DurationBundle\EntityService;
 
+use CampaignChain\CoreBundle\Entity\Hook;
 use CampaignChain\CoreBundle\EntityService\HookServiceTriggerInterface;
 use CampaignChain\Hook\DurationBundle\Entity\Duration;
 use Doctrine\ORM\EntityManager;
@@ -27,7 +28,7 @@ class DurationService implements HookServiceTriggerInterface
         $this->em = $em;
     }
 
-    public function getHook($entity){
+    public function getHook($entity, $mode = Hook::MODE_DEFAULT){
         $hook = new Duration();
 
         if(is_object($entity) && $entity->getId() !== null){
