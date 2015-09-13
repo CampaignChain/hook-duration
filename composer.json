@@ -1,6 +1,6 @@
 {
     "name": "campaignchain/hook-duration",
-    "description": "Define the start and end date of an entity.",
+    "description": "Define the start and end date of an Action.",
     "keywords": ["hook","campaignchain"],
     "type": "campaignchain-hook",
     "homepage": "http://www.campaignchain.com",
