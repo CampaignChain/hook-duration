@@ -19,6 +19,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class DurationType extends HookType
 {
     protected $container;
+
+    /** @var DateTimeUtil $datetime */
     protected $datetime;
 
     public function __construct(ContainerInterface $container)
@@ -43,43 +45,88 @@ class DurationType extends HookType
                 ))
             ;
         } else {
+            /*
+             * If the start date and/or end date is in the past, then disable
+             * the respective form field.
+             */
+            $now = $this->datetime->getNow();
+            $disabledStartDate = false;
+            $disabledEndDate = false;
+            $startDateFormType = 'campaignchain_daterangepicker';
+            $endDateFormType = 'campaignchain_daterangepicker';
+
+            if(
+                $options['data']->getStartDate() &&
+                $options['data']->getStartDate() < $now
+            ){
+                $disabledStartDate = true;
+            }
+
+            if(
+                $options['data']->getEndDate() &&
+                $options['data']->getEndDate() < $now
+            ){
+                $disabledStartDate = true;
+                $disabledEndDate = true;
+            }
+
+            /*
+             * Create the start date form field.
+             */
+            if($disabledStartDate) {
+                $startDateFormType = 'campaignchain_datetime';
+            }
+
             $builder
-                ->add('startDate', new DaterangepickerType(), array(
+                ->add('startDate', $startDateFormType, array(
                     'label' => 'Start',
-//                'data' => $options['data']->getStartDate(),
-                    'model_timezone' => 'UTC',
-                    'view_timezone' => $this->datetime->getUserTimezone(),
-                    'widget' => 'single_text',
-                    'format' => $this->datetime->getUserDatetimeFormat(),
-                    'date_format' => $this->datetime->getUserDateFormat(),
-                    'input' => 'datetime',
+                    'disabled' => $disabledStartDate,
                     'attr' => array(
                         'placeholder' => 'Select a date range',
                         'input_group' => array(
                             'append' => '<span class="fa fa-calendar">',
                         ),
                     )
-                ))
-                ->add('endDate', new DaterangepickerType(), array(
-                    'label' => 'End',
-//                'data' => $options['data']->getEndDate(),
-                    'model_timezone' => 'UTC',
-                    'view_timezone' => $this->datetime->getUserTimezone(),
-                    'widget' => 'single_text',
-                    'format' => $this->datetime->getUserDatetimeFormat(),
-                    'date_format' => $this->datetime->getUserDateFormat(),
-                    'input' => 'datetime',
-//                'read_only' => true,
-                    'attr' => array(
-//                    'placeholder' => 'Will be filled automatically',
-                        'is_end_date' => true,
-                        'input_group' => array(
-                            'append' => '<span class="fa fa-calendar">',
-                        ),
-                        // TODO: Decide how to display/deal with user timezone vs. campaign timezone.
-//                    'help_text' => 'Timezone: '.$options['data']->getEndDate()->getTimezone()->getName(),
-                    )
-                ))
+                ));
+
+            /*
+             * Create the end date form field.
+             */
+            if($disabledEndDate) {
+                $endDateFormType = 'campaignchain_datetime';
+            } elseif($disabledStartDate){
+                $endDateFormType = 'campaignchain_datetimepicker';
+            }
+
+            if($disabledStartDate && !$disabledEndDate) {
+                $builder
+                    ->add('endDate', $endDateFormType, array(
+                        'label' => 'End',
+                        'disabled' => $disabledEndDate,
+                        'start_date' => $this->datetime->formatLocale(
+                                $options['data']->getStartDate()
+                            ),
+                        'attr' => array(
+                            'input_group' => array(
+                                'append' => '<span class="fa fa-calendar">',
+                            ),
+                        )
+                    ));
+            } else {
+                $builder
+                    ->add('endDate', $endDateFormType, array(
+                        'label' => 'End',
+                        'disabled' => $disabledEndDate,
+                        'attr' => array(
+                            'is_end_date' => true,
+                            'input_group' => array(
+                                'append' => '<span class="fa fa-calendar">',
+                            ),
+                        )
+                    ));
+            }
+            
+            $builder
                 ->add('timezone', 'hidden', array(
                     'data' => $this->datetime->getUserTimezone(),
                 ));
