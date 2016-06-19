@@ -54,6 +54,7 @@ class DurationType extends HookType
             $disabledEndDate = false;
             $startDateFormType = 'campaignchain_daterangepicker';
             $endDateFormType = 'campaignchain_daterangepicker';
+            $helpText = 'Timezone: '.$this->datetime->getUserTimezone();
 
             if(
                 $options['data']->getStartDate() &&
@@ -83,6 +84,7 @@ class DurationType extends HookType
                     'disabled' => $disabledStartDate,
                     'attr' => array(
                         'placeholder' => 'Select a date range',
+                        'help_text' => $helpText,
                         'input_group' => array(
                             'append' => '<span class="fa fa-calendar">',
                         ),
@@ -107,6 +109,7 @@ class DurationType extends HookType
                                 $options['data']->getStartDate()
                             ),
                         'attr' => array(
+                            'help_text' => $helpText,
                             'input_group' => array(
                                 'append' => '<span class="fa fa-calendar">',
                             ),
@@ -118,6 +121,7 @@ class DurationType extends HookType
                         'label' => 'End',
                         'disabled' => $disabledEndDate,
                         'attr' => array(
+                            'help_text' => $helpText,
                             'is_end_date' => true,
                             'input_group' => array(
                                 'append' => '<span class="fa fa-calendar">',
