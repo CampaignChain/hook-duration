@@ -17,8 +17,13 @@
 
 namespace CampaignChain\Hook\DurationBundle;
 
+use CampaignChain\Hook\DurationBundle\DependencyInjection\CampaignChainHookDurationExtension;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class CampaignChainHookDurationBundle extends Bundle
 {
+    public function getContainerExtension()
+    {
+        return new CampaignChainHookDurationExtension();
+    }
 }
