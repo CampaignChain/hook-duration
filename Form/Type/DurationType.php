@@ -57,8 +57,8 @@ class DurationType extends HookType
              * the respective form field.
              */
             $now = $this->datetime->getNow();
-            $disabledStartDate = false;
-            $disabledEndDate = false;
+            $readonlyStartDate = false;
+            $readonlyEndDate = false;
             $startDateFormType = 'campaignchain_daterangepicker';
             $endDateFormType = 'campaignchain_daterangepicker';
             $helpText = 'Timezone: '.$this->datetime->getUserTimezone();
@@ -67,29 +67,29 @@ class DurationType extends HookType
                 $options['data']->getStartDate() &&
                 $options['data']->getStartDate() < $now
             ){
-                $disabledStartDate = true;
+                $readonlyStartDate = true;
             }
 
             if(
                 $options['data']->getEndDate() &&
                 $options['data']->getEndDate() < $now
             ){
-                $disabledStartDate = true;
-                $disabledEndDate = true;
+                $readonlyStartDate = true;
+                $readonlyEndDate = true;
             }
 
             /*
              * Create the start date form field.
              */
-            if($disabledStartDate) {
+            if($readonlyStartDate) {
                 $startDateFormType = 'campaignchain_datetime';
             }
 
             $builder
                 ->add('startDate', $startDateFormType, array(
                     'label' => 'Start',
-                    'disabled' => $disabledStartDate,
                     'attr' => array(
+                        'readonly' => $readonlyStartDate,
                         'placeholder' => 'Select a date range',
                         'help_text' => $helpText,
                         'input_group' => array(
@@ -101,17 +101,16 @@ class DurationType extends HookType
             /*
              * Create the end date form field.
              */
-            if($disabledEndDate) {
+            if($readonlyEndDate) {
                 $endDateFormType = 'campaignchain_datetime';
-            } elseif($disabledStartDate){
+            } elseif($readonlyStartDate){
                 $endDateFormType = 'campaignchain_datetimepicker';
             }
 
-            if($disabledStartDate && !$disabledEndDate) {
+            if($readonlyStartDate && !$readonlyEndDate) {
                 $builder
                     ->add('endDate', $endDateFormType, array(
                         'label' => 'End',
-                        'disabled' => $disabledEndDate,
                         'start_date' => $this->datetime->formatLocale(
                                 $options['data']->getStartDate()
                             ),
@@ -126,8 +125,8 @@ class DurationType extends HookType
                 $builder
                     ->add('endDate', $endDateFormType, array(
                         'label' => 'End',
-                        'disabled' => $disabledEndDate,
                         'attr' => array(
+                            'readonly' => $readonlyEndDate,
                             'help_text' => $helpText,
                             'is_end_date' => true,
                             'input_group' => array(
