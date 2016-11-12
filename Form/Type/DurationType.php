@@ -85,18 +85,32 @@ class DurationType extends HookType
                 $startDateFormType = 'campaignchain_datetime';
             }
 
-            $builder
-                ->add('startDate', $startDateFormType, array(
-                    'label' => 'Start',
-                    'attr' => array(
-                        'readonly' => $readonlyStartDate,
-                        'placeholder' => 'Select a date range',
-                        'help_text' => $helpText,
-                        'input_group' => array(
-                            'append' => '<span class="fa fa-calendar">',
-                        ),
-                    )
-                ));
+            if($readonlyStartDate) {
+                $builder
+                    ->add('startDate', $startDateFormType, array(
+                        'label' => 'Start',
+                        'attr' => array(
+                            'readonly' => $readonlyStartDate,
+                            'placeholder' => 'Select a date range',
+                            'help_text' => $helpText,
+                            'input_group' => array(
+                                'append' => '<span class="fa fa-calendar">',
+                            ),
+                        )
+                    ));
+            } else {
+                $builder
+                    ->add('startDate', $startDateFormType, array(
+                        'label' => 'Start',
+                        'attr' => array(
+                            'placeholder' => 'Select a date range',
+                            'help_text' => $helpText,
+                            'input_group' => array(
+                                'append' => '<span class="fa fa-calendar">',
+                            ),
+                        )
+                    ));
+            }
 
             /*
              * Create the end date form field.
@@ -121,12 +135,24 @@ class DurationType extends HookType
                             ),
                         )
                     ));
-            } else {
+            } elseif($readonlyEndDate) {
                 $builder
                     ->add('endDate', $endDateFormType, array(
                         'label' => 'End',
                         'attr' => array(
                             'readonly' => $readonlyEndDate,
+                            'help_text' => $helpText,
+                            'is_end_date' => true,
+                            'input_group' => array(
+                                'append' => '<span class="fa fa-calendar">',
+                            ),
+                        )
+                    ));
+            } else {
+                $builder
+                    ->add('endDate', $endDateFormType, array(
+                        'label' => 'End',
+                        'attr' => array(
                             'help_text' => $helpText,
                             'is_end_date' => true,
                             'input_group' => array(
