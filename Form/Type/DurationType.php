@@ -99,17 +99,51 @@ class DurationType extends HookType
                         )
                     ));
             } else {
-                $builder
-                    ->add('startDate', $startDateFormType, array(
-                        'label' => 'Start',
-                        'attr' => array(
-                            'placeholder' => 'Select a date range',
-                            'help_text' => $helpText,
-                            'input_group' => array(
-                                'append' => '<span class="fa fa-calendar">',
-                            ),
-                        )
-                    ));
+                if(
+                    !$options['data']->getPostStartDateLimit() &&
+                    !$options['data']->getPreStartDateLimit()
+                ) {
+                    // There is no limit to the start date.
+                    $builder
+                        ->add('startDate', $startDateFormType, array(
+                            'label' => 'Start',
+                            'attr' => array(
+                                'placeholder' => 'Select a date range',
+                                'help_text' => $helpText,
+                                'input_group' => array(
+                                    'append' => '<span class="fa fa-calendar">',
+                                ),
+                            )
+                        ));
+                } else {
+                    // There is a limit.
+                    if($options['data']->getPreStartDateLimit()) {
+                        $startDate = $this->datetime->formatLocale(
+                            $options['data']->getPreStartDateLimit()
+                        );
+                    } else {
+                        $startDate = $this->datetime->formatLocale(
+                            $this->datetime->getNow()
+                        );
+                    }
+
+                    $endDate = $this->datetime->formatLocale(
+                        $options['data']->getPostStartDateLimit()
+                    );
+
+                    $builder
+                        ->add('startDate', 'campaignchain_datetimepicker', array(
+                            'label' => 'Start',
+                            'start_date' => $startDate,
+                            'end_date' => $endDate,
+                            'attr' => array(
+                                'help_text' => $helpText,
+                                'input_group' => array(
+                                    'append' => '<span class="fa fa-calendar">',
+                                ),
+                            )
+                        ));
+                }
             }
 
             /*
@@ -117,17 +151,47 @@ class DurationType extends HookType
              */
             if($readonlyEndDate) {
                 $endDateFormType = 'campaignchain_datetime';
-            } elseif($readonlyStartDate){
+            } elseif(
+                $readonlyStartDate ||
+                $options['data']->getPostStartDateLimit() ||
+                $options['data']->getPreStartDateLimit()
+            ){
                 $endDateFormType = 'campaignchain_datetimepicker';
             }
 
-            if($readonlyStartDate && !$readonlyEndDate) {
+            if(
+                !$readonlyEndDate &&
+                (
+                    $readonlyStartDate ||
+                    $options['data']->getPostStartDateLimit() ||
+                    $options['data']->getPreStartDateLimit()
+                )
+            ) {
+                // Show date time picker.
+                if($options['data']->getPreEndDateLimit()) {
+                    $startDate = $this->datetime->formatLocale(
+                        $options['data']->getPreEndDateLimit()
+                    );
+                } else {
+                    $startDate = $this->datetime->formatLocale(
+                        $options['data']->getStartDate()
+                    );
+                }
+
+                if($options['data']->getPostEndDateLimit()) {
+                    $endDate = $this->datetime->formatLocale(
+                        $options['data']->getPostEndDateLimit()
+                    );
+                } else {
+                    $endDate = null;
+                }
+
+
                 $builder
                     ->add('endDate', $endDateFormType, array(
                         'label' => 'End',
-                        'start_date' => $this->datetime->formatLocale(
-                                $options['data']->getStartDate()
-                            ),
+                        'start_date' => $startDate,
+                        'end_date' => $endDate,
                         'attr' => array(
                             'help_text' => $helpText,
                             'input_group' => array(
@@ -136,6 +200,7 @@ class DurationType extends HookType
                         )
                     ));
             } elseif($readonlyEndDate) {
+                // Show read only date time field.
                 $builder
                     ->add('endDate', $endDateFormType, array(
                         'label' => 'End',
@@ -149,6 +214,7 @@ class DurationType extends HookType
                         )
                     ));
             } else {
+                // Show date range picker.
                 $builder
                     ->add('endDate', $endDateFormType, array(
                         'label' => 'End',

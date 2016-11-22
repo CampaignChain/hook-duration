@@ -17,6 +17,7 @@
 
 namespace CampaignChain\Hook\DurationBundle\EntityService;
 
+use CampaignChain\CoreBundle\Entity\Action;
 use CampaignChain\CoreBundle\Entity\Hook;
 use CampaignChain\CoreBundle\EntityService\HookServiceTriggerInterface;
 use CampaignChain\Hook\DurationBundle\Entity\Duration;
@@ -35,12 +36,21 @@ class DurationService implements HookServiceTriggerInterface
         $this->em = $managerRegistry->getManager();
     }
 
+    /**
+     * @param Action $entity
+     * @param string $mode
+     * @return Duration
+     */
     public function getHook($entity, $mode = Hook::MODE_DEFAULT){
         $hook = new Duration();
 
         if(is_object($entity) && $entity->getId() !== null){
             $hook->setStartDate($entity->getStartDate());
             $hook->setEndDate($entity->getEndDate());
+            $hook->setPreStartDateLimit($entity->getPreStartDateLimit());
+            $hook->setPostStartDateLimit($entity->getPostStartDateLimit());
+            $hook->setPreEndDateLimit($entity->getPreEndDateLimit());
+            $hook->setPostEndDateLimit($entity->getPostEndDateLimit());
         }
 
         return $hook;
