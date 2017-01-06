@@ -17,7 +17,10 @@ parameters:
 services:
     campaignchain.hook.campaignchain.duration:
         class: CampaignChain\Hook\DurationBundle\EntityService\DurationService
-        arguments: [ @doctrine, @service_container ]
+        arguments:
+            - "@doctrine"
+            - "@campaignchain.core.campaign"
+            - "@templating"
     campaignchain.hook.form.type.campaignchain.duration:
         class: CampaignChain\Hook\DurationBundle\Form\Type\DurationType
         arguments: [ @service_container ]
