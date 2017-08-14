@@ -23,7 +23,7 @@ services:
             - "@templating"
     campaignchain.hook.form.type.campaignchain.duration:
         class: CampaignChain\Hook\DurationBundle\Form\Type\DurationType
-        arguments: [ @service_container ]
+        arguments: [ '@service_container' ]
     campaignchain.hook.listener.campaignchain.duration:
         class: CampaignChain\Hook\DurationBundle\EventListener\DurationListener
-        arguments: [ @service_container ]
+        arguments: [ '@service_container' ]
