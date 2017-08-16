@@ -21,9 +21,13 @@ services:
             - "@doctrine"
             - "@campaignchain.core.campaign"
             - "@templating"
+
     campaignchain.hook.form.type.campaignchain.duration:
         class: CampaignChain\Hook\DurationBundle\Form\Type\DurationType
         arguments: [ '@service_container' ]
+        tags:
+            - { name: form.type }
+
     campaignchain.hook.listener.campaignchain.duration:
         class: CampaignChain\Hook\DurationBundle\EventListener\DurationListener
         arguments: [ '@service_container' ]

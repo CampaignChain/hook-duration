@@ -17,10 +17,12 @@
 
 namespace CampaignChain\Hook\DurationBundle\Form\Type;
 
+use CampaignChain\CoreBundle\Form\Type\DateTimePickerType;
+use CampaignChain\CoreBundle\Form\Type\DateTimeType;
 use CampaignChain\CoreBundle\Form\Type\HookType;
 use Symfony\Component\Form\FormBuilderInterface;
 use CampaignChain\CoreBundle\Util\DateTimeUtil;
-use CampaignChain\CoreBundle\Form\Type\DaterangepickerType;
+use CampaignChain\CoreBundle\Form\Type\DateRangePickerType;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class DurationType extends HookType
@@ -59,8 +61,8 @@ class DurationType extends HookType
             $now = $this->datetime->getNow();
             $readonlyStartDate = false;
             $readonlyEndDate = false;
-            $startDateFormType = 'campaignchain_daterangepicker';
-            $endDateFormType = 'campaignchain_daterangepicker';
+            $startDateFormType = DateRangePickerType::class;
+            $endDateFormType = DateRangePickerType::class;
             $helpText = 'Timezone: '.$this->datetime->getUserTimezone();
 
             if(
@@ -82,7 +84,7 @@ class DurationType extends HookType
              * Create the start date form field.
              */
             if($readonlyStartDate) {
-                $startDateFormType = 'campaignchain_datetime';
+                $startDateFormType = DateTimeType::class;
             }
 
             if($readonlyStartDate) {
@@ -132,7 +134,7 @@ class DurationType extends HookType
                     );
 
                     $builder
-                        ->add('startDate', 'campaignchain_datetimepicker', array(
+                        ->add('startDate', DateTimePickerType::class, array(
                             'label' => 'Start',
                             'start_date' => $startDate,
                             'end_date' => $endDate,
@@ -150,13 +152,13 @@ class DurationType extends HookType
              * Create the end date form field.
              */
             if($readonlyEndDate) {
-                $endDateFormType = 'campaignchain_datetime';
+                $endDateFormType = DateTimeType::class;
             } elseif(
                 $readonlyStartDate ||
                 $options['data']->getPostStartDateLimit() ||
                 $options['data']->getPreStartDateLimit()
             ){
-                $endDateFormType = 'campaignchain_datetimepicker';
+                $endDateFormType = DateTimePickerType::class;
             }
 
             if(
@@ -235,7 +237,7 @@ class DurationType extends HookType
         }
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'campaignchain_hook_campaignchain_duration';
     }
