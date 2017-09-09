@@ -40,6 +40,8 @@ class DurationType extends HookType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $this->setOptions($options);
+
         if ('rest' == $this->view) {
             $builder->add('startDate', 'datetime', array(
                     'widget' => 'single_text',
