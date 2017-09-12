@@ -30,20 +30,6 @@ use CampaignChain\CoreBundle\Entity\Campaign;
 
 class DurationService extends HookServiceTriggerInterface
 {
-    protected $em;
-    protected $templating;
-    protected $campaignService;
-
-    public function __construct(
-        ManagerRegistry $managerRegistry,
-        CampaignService $campaignService,
-        EngineInterface $templating
-    ){
-        $this->em = $managerRegistry->getManager();
-        $this->campaignService = $campaignService;
-        $this->templating = $templating;
-    }
-
     /**
      * @param Action $entity
      * @param string $mode
@@ -162,45 +148,5 @@ class DurationService extends HookServiceTriggerInterface
      */
     public function getEndDateIdentifier(){
         return 'endDate';
-    }
-
-    public function setPostStartDateLimit($entity)
-    {
-        /** @var Action $firstAction */
-        $firstAction = $this->em->getRepository('CampaignChain\CoreBundle\Entity\Campaign')
-            ->getFirstAction($entity);
-
-        if ($firstAction) {
-            try {
-                $entity->setPostStartDateLimit($firstAction->getStartDate());
-            } catch(\Exception $e) {
-                $entity->setStartDate($firstAction->getStartDate());
-            }
-        }
-
-        return $entity;
-    }
-
-    public function setPreEndDateLimit($entity)
-    {
-        /** @var Action $lastAction */
-        $lastAction = $this->em->getRepository('CampaignChain\CoreBundle\Entity\Campaign')
-            ->getLastAction($entity);
-
-        if ($lastAction) {
-            if (!$lastAction->getEndDate()) {
-                $preEndDateLimit = $lastAction->getStartDate();
-            } else {
-                $preEndDateLimit = $lastAction->getEndDate();
-            }
-
-            try {
-                $entity->setPreEndDateLimit($preEndDateLimit);
-            } catch(\Exception $e) {
-                $entity->setEndDate($preEndDateLimit);
-            }
-        }
-
-        return $entity;
     }
 }
