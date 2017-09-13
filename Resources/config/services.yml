@@ -19,8 +19,9 @@ services:
         class: CampaignChain\Hook\DurationBundle\EntityService\DurationService
         arguments:
             - "@doctrine"
-            - "@campaignchain.core.campaign"
+            - "@campaignchain.core.util.datetime"
             - "@templating"
+            - "@campaignchain.core.campaign"
 
     campaignchain.hook.form.type.campaignchain.duration:
         class: CampaignChain\Hook\DurationBundle\Form\Type\DurationType
